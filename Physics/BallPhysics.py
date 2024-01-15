@@ -9,22 +9,20 @@ running = True
 statText = pygame.font.SysFont('arial', 30)
 
 #Physics variables
-gravity = 0.6 #Default is 9.81 but it may change if the sim is weird
+gravity = 0.6 #Default is 0.6, Isn't finely tuned so this will likely change
 speed = pygame.Vector2(10, -10) #Speed of ball and the direction +x is right, +y is down
 angle = 0 #Angle of the balls speed 0 - 360, 0 being directly upwards and angle and is clockwise
 center = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2) #Center of screen, used for finding ball relative to the containing circle
 
 #maxSpeed = 100 max speed for ball if wanted
-collided = False
+collided = False #Stops ball from bouncing more than once while colliding once
 radius = 500 #Radius of the containing circle
-energyLoss = 0.1 #lost energy on bounce, is a percentage 1.00 - 0.00, can be over 1 to make it gain energy
+energyLoss = 0.1 #lost energy on bounce, is 1.00 - 0.00, can be over 1 to make it gain energy
 waitDefault = 3 #Default value for wait
 wait = 3 #Frames to wait before turning off collided, Stops the ball from being stuck in the wall
 
 #Physics objects
-ballCoords = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-ballCoords.x = pygame.math.clamp(ballCoords.x, 0, 1920) #(screen.get_width() / 2) - radius, (screen.get_width() / 2) + radius
-ballCoords.y = pygame.math.clamp(ballCoords.y, 0, 1080) #(screen.get_height() / 2) - radius, (screen.get_height() / 2) + radius
+ballCoords = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2) #Ball coords on screen with [0,0] being top left
 
 while running:
     #Events
@@ -75,9 +73,8 @@ while running:
     colliding = hyp >= radius
 
     if colliding and not collided:
-        print('1')
         collided = True
-        speed *= -1 #Not all all correct bounces but I needed something simple to test collisions, Collisions arent perfect but they'll work for now
+        speed *= -1 #Not at all correct bounces but I needed something simple to test collisions, Collisions aren't perfect but they'll work for now
     elif collided:
         if wait == 0:
             wait = waitDefault
@@ -88,6 +85,6 @@ while running:
     ballCoords += speed
 
 
-    clock.tick(60)
+    clock.tick(60) #Frames per second but it will mess with sim if changed so leave it as is, I may change this sometime
 
 pygame.quit
