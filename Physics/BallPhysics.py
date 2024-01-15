@@ -10,7 +10,7 @@ statText = pygame.font.SysFont('arial', 30)
 
 #Physics variables
 gravity = 0.6 #Default is 9.81 but it may change if the sim is weird
-speed = pygame.Vector2(10, -10) #Speed of ball and the direction
+speed = pygame.Vector2(10, -10) #Speed of ball and the direction +x is right, +y is down
 angle = 0 #Angle of the balls speed 0 - 360, 0 being directly upwards and angle and is clockwise
 center = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2) #Center of screen, used for finding ball relative to the containing circle
 
@@ -77,7 +77,7 @@ while running:
     if colliding and not collided:
         print('1')
         collided = True
-        speed *= -1
+        speed *= -1 #Not all all correct bounces but I needed something simple to test collisions, Collisions arent perfect but they'll work for now
     elif collided:
         if wait == 0:
             wait = waitDefault
@@ -88,6 +88,6 @@ while running:
     ballCoords += speed
 
 
-    clock.tick(144)
+    clock.tick(60)
 
 pygame.quit
