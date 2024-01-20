@@ -113,9 +113,9 @@ while running:
         positionSurface = statText.render(f"Position: [{centeredCoords.x}, {-centeredCoords.y}]", False, 'White')
         angleSurface = statText.render(f"Angle: {angle}", False, 'White')    
         sideSurface = statText.render(f"SideA: {round(sideA)} SideB: 500 SideC: {round(sideC)}", False, 'white')
-        screen.blit(speedSurface, (screen.get_width() / 1.2, screen.get_height() / 6))
-        screen.blit(positionSurface, (screen.get_width() / 1.2, screen.get_height() / 5))
-        screen.blit(angleSurface, (screen.get_width() / 1.2, screen.get_height() / 4.3))
+        screen.blit(speedSurface, (screen.get_width() / 1.3, screen.get_height() / 6))
+        screen.blit(positionSurface, (screen.get_width() / 1.3, screen.get_height() / 5))
+        screen.blit(angleSurface, (screen.get_width() / 1.3, screen.get_height() / 4.3))
         screen.blit(sideSurface, (screen.get_width() / 1.5, screen.get_height() - 100))
 
     #Flip to send frame
