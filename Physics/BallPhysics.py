@@ -7,6 +7,7 @@ screen = pygame.display.set_mode((1920,1080)) #Set resolution for screen. Don't 
 clock = pygame.time.Clock() #Instaciates clock for the application.
 running = True #While true the app will run and when false the app will close.
 paused = False #Allows sim to be paused.
+debug = False #Shows some visual debug stuff. Helps me visualize things to make it easier.
 statText = pygame.font.SysFont('arial', 30) #Text Settings for all of the text displayed.
 
 #Physics variables
@@ -38,6 +39,8 @@ while running:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_p]:
                 paused = not paused
+            elif keys[pygame.K_d]:
+                debug = not debug
     
     if not paused:
         #Math
@@ -61,13 +64,20 @@ while running:
         elif -centeredCoords.y == 0 and centeredCoords.x == 0:
             angle = 0
         else:
+            '''
+            A little explanation of how I get this angle.
+            Uses 3 sides to find the angle, SideA being the balls distance from the top of the circle, 
+            SideB being the radius of the circle, and SideC which is the balls distance from the center of the circle.
+            Using these variables we can plug them into the law of cosine function which returns us the angle, 
+            Then if its on the left side of the circle we subtract the angle from 360 to get the correct angle.
+            '''
             angle = math.degrees(math.acos(((sideB * sideB) + (sideC * sideC) - (sideA * sideA))/(2 * sideB * sideC)))
             if centeredCoords.x < 0:
                 angle = 360 - angle
         
         #Get angle of speed
-        hyp = math.sqrt((speed.x * speed.x) + (speed.y * speed.y))
-        speedAngle = math.degrees(math.tan(speed.y/speed.x))
+        
+        speedAngle = 1 #I'm being dumb and was doing this way wrong
 
             
 
@@ -96,10 +106,13 @@ while running:
         
         pygame.draw.circle(screen, "white", center, radius+5)
         pygame.draw.circle(screen, "black", center, radius)
-        #pygame.draw.line(screen, "yellow", center, ballCoords, 3)
-        #pygame.draw.circle(screen, "red", center, 4)
-        pygame.draw.line(screen, "Blue", ballCoords, (ballCoords.x, ballCoords.y + 4 * speed.y), 5)
-        pygame.draw.line(screen, "Red", ballCoords, (ballCoords.x + 4 * speed.x, ballCoords.y), 5)
+        if debug:
+            pygame.draw.line(screen, "yellow", center, ballCoords, 3)
+            pygame.draw.line(screen, "orange", center, top)
+            pygame.draw.line(screen, "orange", top, ballCoords)
+            pygame.draw.circle(screen, "red", center, 4)
+            pygame.draw.line(screen, "Blue", ballCoords, (ballCoords.x, ballCoords.y + 4 * speed.y), 5)
+            pygame.draw.line(screen, "Red", ballCoords, (ballCoords.x + 4 * speed.x, ballCoords.y), 5)
         pygame.draw.circle(screen, "white", ballCoords, 5)
 
         
