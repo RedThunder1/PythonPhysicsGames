@@ -70,7 +70,7 @@ while running:
             Then if its on the left side of the circle we subtract the angle from 360 to get the correct angle.
             If debug is enabled this is shown by the orange triangle.
             '''
-            angle = math.degrees(math.acos(((sideB * sideB) + (sideC * sideC) - (sideA * sideA))/(2 * sideB * sideC)))
+            angle = math.degrees(math.acos(((sideB ** 2) + (sideC ** 2) - (sideA ** 2))/(2 * sideB * sideC)))
             if centeredCoords.x < 0:
                 angle = 360 - angle
         
