@@ -22,9 +22,10 @@ collided = False #Stops ball from bouncing more than once while colliding.
 waitDefault = 2 #Default value for wait, recommended to leave at 2.
 wait = 2 #Frames to wait before turning off collided.
 top = pygame.Vector2(screen.get_width() / 2, (screen.get_height() / 2) - radius) #Top of containing circle, used for calculations.
+collisionPoint = pygame.Vector2(0,0) #Point of collision. Used to stop ball from going through container.
 
 #Physics objects
-ballCoords = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2) #Ball coords on screen with [0,0] being top left.
+ballCoords = pygame.Vector2(center) #Ball coords on screen with [0,0] being top left.
 centeredCoords = pygame.Vector2(0, 0) #Ball coordinates which are centered to the screen. Allows for easier calculations.
 
 while running:
@@ -40,10 +41,12 @@ while running:
                 debug = not debug
     
     if not paused:
+    
+
         #Math
         ballDistance = ballCoords.distance_to(center) #Get ball's distance from center, Used for angle calculations and collisions.
         centeredCoords = ballCoords - center #Centered coords for position.
-
+        speedAngle = 1 #Angle of speed
         #Gets the angle around the center point, 0 - 359.
         sideC = ballDistance
         sideB = radius
@@ -73,19 +76,21 @@ while running:
             angle = math.degrees(math.acos(((sideB ** 2) + (sideC ** 2) - (sideA ** 2))/(2 * sideB * sideC)))
             if centeredCoords.x < 0:
                 angle = 360 - angle
-        
-        #Get angle of speed
-        
-        speedAngle = 1 #I'm being dumb and was doing this way wrong
 
-            
+        #Get collision point
+        
+
+        if ballDistance > 500: #stop ball from passing throught the container
+            collisionPoint = [1,1] #unsure how to do this atm.
 
         #Calculate gravity and if colliding.
         #Bounces are not correct yet.
         colliding = ballDistance >= radius
-        
+        ballCoords += speed
+        speed.y += gravity
         if colliding and not collided:
             collided = True
+            #paused = True
             speed *= -energyLoss
         elif collided:
             if wait == 0:
@@ -94,8 +99,9 @@ while running:
             else:
                 wait -= 1
         
-        ballCoords += speed
-        speed.y += gravity
+        
+            
+        
 
         #Fill screen
         screen.fill("black")
@@ -103,8 +109,7 @@ while running:
         #Render Frames
         #Render Circles and debug line
         
-        pygame.draw.circle(screen, "white", center, radius+5)
-        pygame.draw.circle(screen, "black", center, radius)
+        pygame.draw.circle(screen, "white", center, radius+5, 5)
         if debug:
             pygame.draw.line(screen, "orange", center, ballCoords)
             pygame.draw.line(screen, "orange", center, top)
@@ -123,7 +128,7 @@ while running:
             screen.blit(angleSurface, (screen.get_width() / 1.3, screen.get_height() / 4.3))
             screen.blit(sideSurface, (screen.get_width() / 1.5, screen.get_height() - 100))
 
-        pygame.draw.circle(screen, "white", ballCoords, 5)
+        pygame.draw.circle(screen, "aqua", ballCoords, 5)
 
     #Flip to send frame
     pygame.display.flip()
